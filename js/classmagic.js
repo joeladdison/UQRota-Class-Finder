@@ -2,14 +2,12 @@ var gRoomData = null
 var $xml = null
 var xmlDoc = null
 var coursesArray = null
-var soWittyIndex = 0;
-var soWitty = ['Now powered by magical <a href="http://www.uqrota.net">UQRota</a> dust!', 'Now with 10% less soylent green in every refec meal!', 'By Emile Victor, Michael Mallon & Alex Wilson', 'This is the result of procrastination', 'More fun than si-net', 'More healthy than UQ Subway'];
 var buildingsSTL = {}
 var buildingsGATTN = {}
 var buildingsIPSWC = {}
 var currentCampus = "STL"
 var buildings = {}
-var currentSemester = "6360" //Hardcoded: must be updated.
+var currentSemester = "6420" //Hardcoded: must be updated.
 var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 var longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -24,12 +22,6 @@ $(document).ready(function () {
     $("#header").show("slide", {
         direction: "up"
     }, 200);
-
-    $("#lulzyMessage").hide();
-    soWittyIndex = Math.floor(Math.random() * soWitty.length);
-    $("#lulzyMessage").append(soWitty[soWittyIndex]);
-    setTimeout("showLulzyMessage()", 500);
-    var timer = setInterval("showNextMessage()", 15000);
 
     $("#buildingRoomQuery").show("slide", {
         direction: "up"
@@ -171,28 +163,6 @@ $(document).ready(function () {
     });
 
 });
-
-function showLulzyMessage() {
-    $("#lulzyMessage").fadeIn('slow');
-}
-
-function showNextMessage() {
-    $("#lulzyMessage").fadeOut('fast', function () {
-
-        soWittyIndex += 1;
-        if (soWittyIndex == soWitty.length) {
-            soWittyIndex = 0;
-        }
-        $("#lulzyMessage").empty();
-        $("#lulzyMessage").append(soWitty[soWittyIndex]);
-        $("#lulzyMessage").fadeIn('slow')
-
-    });
-
-
-
-
-}
 
 function showLoader() {
     $("#loader").fadeIn('slow');

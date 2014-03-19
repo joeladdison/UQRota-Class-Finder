@@ -2,14 +2,12 @@ var gRoomData = null
 var $xml = null
 var xmlDoc = null
 var coursesArray = null
-var soWittyIndex = 0;
-var soWitty = ['Now powered by magical <a href="http://www.uqrota.net">UQRota</a> dust!', 'Now with 10% less soylent green in every refec meal!', 'By Emile Victor, Michael Mallon & Alex Wilson', 'This is the result of procrastination', 'More fun than si-net', 'More healthy than UQ Subway', 'From the makers of "ARGH! WHERE\'S MY CLASS?!"']
 var buildingsSTL = {}
 var buildingsGATTN = {}
 var buildingsIPSWC = {}
 var currentCampus = "STL"
 var buildings = {}
-var currentSemester = "6360" //Hardcoded: must be updated.
+var currentSemester = "6420" //Hardcoded: must be updated.
 var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
 var longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -37,13 +35,6 @@ $(document).ready(function () {
     $("#header").show("slide", {
         direction: "up"
     }, 200);
-
-    $("#lulzyMessage").hide();
-    showLoader();
-    soWittyIndex = Math.floor(Math.random() * soWitty.length);
-    $("#lulzyMessage").append(soWitty[soWittyIndex]);
-    setTimeout("showLulzyMessage()", 500);
-    var timer = setInterval("showNextMessage()", 15000);
 
     //$("#buildingRoomQuery").show("slide", {direction: "up"},200)
 
@@ -115,7 +106,7 @@ $(document).ready(function () {
 
 		        //This does not take into consideration the campus, must be changed.
                  calculateRoomResults(roomSplit, getUrlVars()["c"]);
-		        
+
 		    } else {
             	$("#loader").fadeOut('slow', function () {
 	                $("#buildingRoomQuery").show("slide", {
@@ -242,7 +233,7 @@ function calculateRoomResults(roomSplit,campus)
 			    buildings = buildingsIPSWC;
 			} else if (currentCampus == "gatton") {
 			    buildings = buildingsGATTN
-			}        	
+			}
         } else {
 			if (campus == "STLUC") {
 			    buildings = buildingsSTL;
@@ -250,9 +241,9 @@ function calculateRoomResults(roomSplit,campus)
 			    buildings = buildingsIPSWC;
 			} else if (campus == "GATTN") {
 			    buildings = buildingsGATTN
-			} 
+			}
         }
-        
+
         $.ajax({
             url: "http://rota.eait.uq.edu.au/building/" + buildings[roomSplit[0]] + "/room/" + roomSplit[1] + "/sessions.xml",
             dataType: 'text',
@@ -336,7 +327,7 @@ function calculateRoomResults(roomSplit,campus)
 
                 if (coursesArray.length == 0) {
                     $("#results").empty();
-                    $("#results").append("<iframe width=\"420\" height=\"315\" src=\"http://www.youtube.com/embed/4tiPOMd14eQ\" frameborder=\"0\" allowfullscreen></iframe>");
+                    $("#results").append("<p>Looks like there is nothing in that room on that day.</p>");
                 }
 
                 showResults();
@@ -357,28 +348,6 @@ function calculateRoomResults(roomSplit,campus)
         });
 }
 
-
-function showLulzyMessage() {
-    $("#lulzyMessage").fadeIn('slow');
-}
-
-function showNextMessage() {
-    $("#lulzyMessage").fadeOut('fast', function () {
-
-        soWittyIndex += 1;
-        if (soWittyIndex == soWitty.length) {
-            soWittyIndex = 0;
-        }
-        $("#lulzyMessage").empty();
-        $("#lulzyMessage").append(soWitty[soWittyIndex]);
-        $("#lulzyMessage").fadeIn('slow')
-
-    });
-
-
-
-
-}
 
 function showLoader() {
     $("#loader").fadeIn('slow');

@@ -1,4 +1,6 @@
-What-s-In-There
-===============
+UQRota Class Finder
+===================
 
-What's in there, now with the power of UQ Rota!
+Uses the UQRota API to find:
+* location of classes for courses
+* classes in a particular room on a given day

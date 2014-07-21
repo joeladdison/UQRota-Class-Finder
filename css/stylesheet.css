@@ -130,7 +130,18 @@ span.link {
     padding:5px;
 }
 
+.warning {
+    font-style: italic;
+    font-size: small;
+}
 
+.indivClass {
+    border-bottom: 1px solid #ccc;
+}
+
+.className {
+    font-weight: bold;
+}
 
 /***** MOBILE *****/
 

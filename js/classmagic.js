@@ -76,8 +76,11 @@ $(document).ready(function () {
         //Hide the menu, show a spinner while we load.
 
         //Now we need to hit up rota to get the data we need.
+        var course = $('#roomName')[0].value.toUpperCase();
+        var shortDate = $("#day").val();
+
         $.ajax({
-            url: 'http://rota.eait.uq.edu.au/offerings/find.xml?with={"course_code":"' + $('#roomName')[0].value.toUpperCase() + '","semester_id":'+currentSemester+'}',
+            url: 'http://rota.eait.uq.edu.au/offerings/find.xml?with={"course_code":"' + course + '","semester_id":'+currentSemester+'}',
             dataType: 'text',
             success: function (data) {
                 // do stuff with json (in this case an array)
@@ -113,8 +116,10 @@ $(document).ready(function () {
                             dataType: 'text',
                             success: function (data) {
                                 $('#results').empty();
+                                $('#results').append("<h2>Classes for " + course + " on " + longDays[days.indexOf(shortDate)] + "</h2>");
                                 xmlDoc2 = $.parseXML(data);
                                 $xml2 = $(xmlDoc2);
+                                var count = 0;
                                 $xml2.find('session').each(function () {
                                     var d = $(this).find('day').text();
                                     var st = $(this).find('start').text();
@@ -133,12 +138,15 @@ $(document).ready(function () {
                                         camp = "Ipswich";
                                     }
                                     if ($('#day').val() == d) {
-                                        $('#results').append('<p class="className">' + ctype + grp + '&nbsp;&nbsp;' + st + '-' + fn + ' (' + camp + ')</p>');
-                                        $('#results').append('<p class="day">' + bnum + ' (' + bname + '), Room ' + rm + '</p><br/>');
+                                        var div = $('<div/>').addClass('indivClass');
+                                        div.append('<p class="className">' + ctype + grp + ' | ' + st + '-' + fn + '</p>');
+                                        div.append('<p class="day">' + bnum + ' (' + bname + ' - ' + camp + '), Room ' + rm + '</p>');
+                                        $('#results').append(div);
+                                        count++;
                                     }
                                 });
-                                if ($('#results').text() === "") {
-                                    $('#results').append('<p class="className">' + $('#roomName').val() + ' is not on.</p>');
+                                if (count === 0) {
+                                    $('#results').append('<p class="className">' + course + ' is not on ' + longDays[days.indexOf(shortDate)] + '.</p>');
                                     $('#results').append('<p class="day">Try a different day?</p>');
                                 }
                                 $("#loader").hide();

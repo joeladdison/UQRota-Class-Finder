@@ -256,12 +256,9 @@ function calculateRoomResults(roomSplit, campus)
         var todayShortDate = days[dayIndex-1]
                 */
                 var shortDate = $("#day").val();
-                console.log(shortDate);
-
                 var classes = [];
 
                 $xml.find('session').each(function () {
-                    // console.log($(this).find('group series offering semester id').text());
                     if ($(this).find('day').text() == shortDate && ($(this).find('group series offering semester id').text() == currentSemester)) {
                         var classObject = {};
                         var startDate = Date.parse($(this).find('day').text() + ' ' + $(this).find('start').text());
@@ -293,7 +290,8 @@ function calculateRoomResults(roomSplit, campus)
 
                 $("#loader").hide();
                 $("#results").empty();
-                $("#results").append("<p class=\"warning\">Please note that the times shown on this page are taken directly from MySI-net... They may (and probably will) contain errors. These are the classes occurring in this room on " + longDays[days.indexOf(shortDate)] + ".");
+                $('#results').append("<h2>Classes in room " + roomSplit[0] + "-" + roomSplit[1] + " on " + longDays[days.indexOf(shortDate)] + "</h2>");
+                $("#results").append("<p class=\"warning\">Please note that the times shown on this page are taken directly from MySI-net... They may (and probably will) contain errors.</p>");
 
                 for (var i = 0; i < coursesArray.length; i++) {
                     var startMinutes;
@@ -301,7 +299,7 @@ function calculateRoomResults(roomSplit, campus)
                     if (coursesArray[i].startDate.getMinutes() === 0) {
                         startMinutes = "00";
                     } else {
-                        startMinutes = coursesArray[i].startDate.getMinutes().toString()
+                        startMinutes = coursesArray[i].startDate.getMinutes().toString();
                     }
 
                     if (coursesArray[i].finishDate.getMinutes() === 0) {
@@ -309,18 +307,20 @@ function calculateRoomResults(roomSplit, campus)
                     } else {
                         finishMinutes = coursesArray[i].finishDate.getMinutes().toString();
                     }
+
                     //Check if the next on the list is at the same time. If so, combine them.
+                    var div = $('<div/>').addClass('indivClass');
                     if (((i + 1) < coursesArray.length) && coursesArray[i + 1].startDate.compareTo(coursesArray[i].startDate) === 0) {
-                        $("#results").append("<div class=\"indivClass\"><p class=\"className\">Class: " + coursesArray[i].course + " or " + coursesArray[i + 1].course + "</p> <p class=\"day\">" + days[coursesArray[i].startDate.getDay() - 1] + " | " + coursesArray[i].startDate.getHours().toString() + ":" + startMinutes + " - " + coursesArray[i].finishDate.getHours().toString() + ":" + finishMinutes);
-                        //Skip over
-                        i++;
+                        div.append('<p class="className">' + coursesArray[i].course + ' or ' + coursesArray[i + 1].course + '</p>');
+                        i++; // Skip next result, as we just covered it
                     } else {
-                        $("#results").append("<div class=\"indivClass\"><p class=\"className\">Class: " + coursesArray[i].course + "</p> <p class=\"day\">" + days[coursesArray[i].startDate.getDay() - 1] + " | " + coursesArray[i].startDate.getHours().toString() + ":" + startMinutes + " - " + coursesArray[i].finishDate.getHours().toString() + ":" + finishMinutes);
+                        div.append('<p class="className">' + coursesArray[i].course + '</p>');
                     }
+                    div.append('<p class="day">' + days[coursesArray[i].startDate.getDay() - 1] + " | " + coursesArray[i].startDate.getHours().toString() + ":" + startMinutes + " - " + coursesArray[i].finishDate.getHours().toString() + ":" + finishMinutes +  '</p>');
+                    $('#results').append(div);
                 }
 
                 if (coursesArray.length === 0) {
-                    $("#results").empty();
                     $("#results").append("<p>Looks like there is nothing in that room on that day.</p>");
                 }
 

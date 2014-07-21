@@ -1,26 +1,26 @@
-var gRoomData = null
-var $xml = null
-var xmlDoc = null
-var coursesArray = null
-var buildingsSTL = {}
-var buildingsGATTN = {}
-var buildingsIPSWC = {}
-var currentCampus = "STL"
-var buildings = {}
-var currentSemester = "6460" //Hardcoded: must be updated.
-var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
-var longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+var gRoomData = null;
+var $xml = null;
+var xmlDoc = null;
+var coursesArray = null;
+var buildingsSTL = {};
+var buildingsGATTN = {};
+var buildingsIPSWC = {};
+var currentCampus = "STL";
+var buildings = {};
+var currentSemester = "6460"; //Hardcoded: must be updated.
+var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 
 // This function is available at: http://papermashup.com/read-url-get-variables-withjavascript/
 // It will provide you with a get variable from the URL.
-    function getUrlVars() {
-        var vars = {};
-        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-            vars[key] = value;
-        });
-        return vars;
-    }
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value;
+    });
+    return vars;
+}
 
 
 $(document).ready(function () {
@@ -57,18 +57,18 @@ $(document).ready(function () {
     });
 
     $("#ipswich").click(function () {
-        currentCampus = "ipswich"
+        currentCampus = "ipswich";
         if ($('#advanced').is(':visible')) {
             generateSelects("Ipswich");
         }
-    })
+    });
 
     $("#Gatton").click(function () {
-        currentCampus = "gatton"
+        currentCampus = "gatton";
         if ($('#advanced').is(':visible')) {
             generateSelects("Gatton");
         }
-    })
+    });
 
 
 
@@ -79,41 +79,41 @@ $(document).ready(function () {
         dataType: 'text',
         success: function (data) {
             xmlDoc = $.parseXML(data);
-            $xml = $(xmlDoc)
+            $xml = $(xmlDoc);
 
             $xml.find('building').each(function () {
 
                 //Currently restricted to St Lucia
 
                 if ($(this).find('campus code').text() == 'STLUC') {
-                    buildingsSTL[$(this).find('number').text()] = $(this).find('id').text()
+                    buildingsSTL[$(this).find('number').text()] = $(this).find('id').text();
                 } else if ($(this).find('campus code').text() == 'GATTN') {
-                    buildingsGATTN[$(this).find('number').text()] = $(this).find('id').text()
+                    buildingsGATTN[$(this).find('number').text()] = $(this).find('id').text();
 
                 } else if ($(this).find('campus code').text() == 'IPSWC') {
-                    buildingsIPSWC[$(this).find('number').text()] = $(this).find('id').text()
+                    buildingsIPSWC[$(this).find('number').text()] = $(this).find('id').text();
                 }
 
             });
 
-        	//Check whether there are GET variables present, indicates that this page was opened up
-			//from a direct link or QR code.
-			if (getUrlVars()["b"] && getUrlVars()["r"] && getUrlVars()["c"]) {
-				$("#buildingRoomQuery").hide();
-		        roomSplit = []
-		        roomSplit.push(getUrlVars()["b"]);
-		        roomSplit.push(getUrlVars()["r"]);
+            //Check whether there are GET variables present, indicates that this page was opened up
+            //from a direct link or QR code.
+            var urlVars = getUrlVars();
+            if (urlVars.b && urlVars.r && urlVars.c) {
+                $("#buildingRoomQuery").hide();
+                roomSplit = [];
+                roomSplit.push(urlVars.b);
+                roomSplit.push(urlVars.r);
 
-		        //This does not take into consideration the campus, must be changed.
-                 calculateRoomResults(roomSplit, getUrlVars()["c"]);
-
-		    } else {
-            	$("#loader").fadeOut('slow', function () {
-	                $("#buildingRoomQuery").show("slide", {
-	                    direction: "up"
-	                }, 200);
-            	});
-		    }
+                //This does not take into consideration the campus, must be changed.
+                calculateRoomResults(roomSplit, urlVars.c);
+            } else {
+                $("#loader").fadeOut('slow', function () {
+                    $("#buildingRoomQuery").show("slide", {
+                        direction: "up"
+                    }, 200);
+                });
+            }
 
 
         },
@@ -124,7 +124,7 @@ $(document).ready(function () {
                     direction: "up"
                 }, 200);
             });
-            return
+            return;
         }
     });
 
@@ -133,7 +133,7 @@ $(document).ready(function () {
 
     $("#selectRoom").click(function () {
         showLoader();
-        $("#buildingRoomQuery").fadeOut('fast')
+        $("#buildingRoomQuery").fadeOut('fast');
 
         //showResults();
         room = $("#roomName").val();
@@ -144,7 +144,7 @@ $(document).ready(function () {
             $("#errorMessage").show("slide", {
                 direction: "up"
             }, 200);
-            var timer = setTimeout("hideErrorMessage()", 5000);
+            var timer = setTimeout(hideErrorMessage, 5000);
             $("#loader").fadeOut('slow', function () {
                 $("#buildingRoomQuery").show("slide", {
                     direction: "up"
@@ -154,14 +154,12 @@ $(document).ready(function () {
         } else {
             for (var i = 0; i < roomSplit.length; i++) {
                 //Trim everything so that we don't have any spaces anywhere.
-                roomSplit[i] = $.trim(roomSplit[i])
+                roomSplit[i] = $.trim(roomSplit[i]);
             }
         }
 
-
         calculateRoomResults(roomSplit,"AUTO");
-
-    })
+    });
 
     $("#header").click(function () {
         $("#results").hide("slide", {
@@ -169,17 +167,14 @@ $(document).ready(function () {
         }, 200);
         $("#buildingRoomQuery").show("slide", {
             direction: "up"
-        }, 200)
-
-    })
+        }, 200);
+    });
 
     $('#roomName').keyup(function (event) {
         if (event.keyCode == 13) {
             $('#selectRoom').click();
         }
     });
-
-
 
     $("#toggleAdvanced").click(function () {
 
@@ -212,36 +207,36 @@ $(document).ready(function () {
     });
 
 
-				var urlEncoded = urlParams();
-				if (urlEncoded.urlencoded) {
-					useURLEncoded(urlEncoded);
-				}
+    var urlEncoded = urlParams();
+    if (urlEncoded.urlencoded) {
+        useURLEncoded(urlEncoded);
+    }
 
 });
 
 
-function calculateRoomResults(roomSplit,campus)
+function calculateRoomResults(roomSplit, campus)
 {
-	//Hide the menu, show a spinner while we load.
+    //Hide the menu, show a spinner while we load.
 
         //Now we need to hit up rota to get the data we need.
         if (campus == "AUTO")
         {
-			if (currentCampus == "STL") {
-			    buildings = buildingsSTL;
-			} else if (currentCampus == "ipswich") {
-			    buildings = buildingsIPSWC;
-			} else if (currentCampus == "gatton") {
-			    buildings = buildingsGATTN
-			}
+            if (currentCampus == "STL") {
+                buildings = buildingsSTL;
+            } else if (currentCampus == "ipswich") {
+                buildings = buildingsIPSWC;
+            } else if (currentCampus == "gatton") {
+                buildings = buildingsGATTN;
+            }
         } else {
-			if (campus == "STLUC") {
-			    buildings = buildingsSTL;
-			} else if (campus == "IPSWCH") {
-			    buildings = buildingsIPSWC;
-			} else if (campus == "GATTN") {
-			    buildings = buildingsGATTN
-			}
+            if (campus == "STLUC") {
+                buildings = buildingsSTL;
+            } else if (campus == "IPSWCH") {
+                buildings = buildingsIPSWC;
+            } else if (campus == "GATTN") {
+                buildings = buildingsGATTN;
+            }
         }
 
         $.ajax({
@@ -252,49 +247,49 @@ function calculateRoomResults(roomSplit,campus)
                 gRoomData = data;
                 //gRoomData = "<rss version='2.0'>" + gRoomData.toString + "</rss>"
                 xmlDoc = $.parseXML(gRoomData);
-                $xml = $(xmlDoc)
+                $xml = $(xmlDoc);
 
                 /*
-		//Filter for today's date
-		var today = new Date();
-		dayIndex = today.getDay();
-		var todayShortDate = days[dayIndex-1]
+        //Filter for today's date
+        var today = new Date();
+        dayIndex = today.getDay();
+        var todayShortDate = days[dayIndex-1]
                 */
                 var shortDate = $("#day").val();
-                console.log(shortDate)
+                console.log(shortDate);
 
-                var classes = []
+                var classes = [];
 
                 $xml.find('session').each(function () {
-                    console.log($(this).find('group series offering semester id').text())
+                    // console.log($(this).find('group series offering semester id').text());
                     if ($(this).find('day').text() == shortDate && ($(this).find('group series offering semester id').text() == currentSemester)) {
-                        var classObject = {}
+                        var classObject = {};
                         var startDate = Date.parse($(this).find('day').text() + ' ' + $(this).find('start').text());
                         var finishDate = Date.parse($(this).find('day').text() + ' ' + $(this).find('finish').text());
 
-                        if (startDate == null || finishDate == null) {
-                            console.log("startDate or finishDate null for " + $(this).find('group series offering course').text())
+                        if (startDate === null || finishDate === null) {
+                            console.log("startDate or finishDate null for " + $(this).find('group series offering course').text());
                         }
-                        classObject.course = $(this).find('group series offering course').text()
-                        classObject.startDate = startDate
-                        classObject.finishDate = finishDate
+                        classObject.course = $(this).find('group series offering course').text();
+                        classObject.startDate = startDate;
+                        classObject.finishDate = finishDate;
                         classes.push(classObject);
                     } else {
                         //This class is not today's.
                     }
-                })
+                });
 
                 //Sort the array
 
                 classes.sort(function (a, b) {
-                    if (a.startDate != null && b.startDate != null) {
+                    if (a.startDate !== null && b.startDate !== null) {
                         return a.startDate.compareTo(b.startDate);
                     } else {
                         return 0;
                     }
                 });
 
-                coursesArray = classes
+                coursesArray = classes;
 
                 $("#loader").hide();
                 $("#results").empty();
@@ -303,29 +298,28 @@ function calculateRoomResults(roomSplit,campus)
                 for (var i = 0; i < coursesArray.length; i++) {
                     var startMinutes;
                     var finishMinutes;
-                    if (coursesArray[i].startDate.getMinutes() == 0) {
-                        startMinutes = "00"
+                    if (coursesArray[i].startDate.getMinutes() === 0) {
+                        startMinutes = "00";
                     } else {
                         startMinutes = coursesArray[i].startDate.getMinutes().toString()
                     }
 
-                    if (coursesArray[i].finishDate.getMinutes() == 0) {
-                        finishMinutes = "00"
+                    if (coursesArray[i].finishDate.getMinutes() === 0) {
+                        finishMinutes = "00";
                     } else {
-                        finishMinutes = coursesArray[i].finishDate.getMinutes().toString()
+                        finishMinutes = coursesArray[i].finishDate.getMinutes().toString();
                     }
                     //Check if the next on the list is at the same time. If so, combine them.
-                    if (((i + 1) < coursesArray.length) && coursesArray[i + 1].startDate.compareTo(coursesArray[i].startDate) == 0) {
-                        $("#results").append("<div class=\"indivClass\"><p class=\"className\">Class: " + coursesArray[i].course + " or " + coursesArray[i + 1].course + "</p> <p class=\"day\">" + days[coursesArray[i].startDate.getDay() - 1] + " | " + coursesArray[i].startDate.getHours().toString() + ":" + startMinutes + " - " + coursesArray[i].finishDate.getHours().toString() + ":" + finishMinutes)
+                    if (((i + 1) < coursesArray.length) && coursesArray[i + 1].startDate.compareTo(coursesArray[i].startDate) === 0) {
+                        $("#results").append("<div class=\"indivClass\"><p class=\"className\">Class: " + coursesArray[i].course + " or " + coursesArray[i + 1].course + "</p> <p class=\"day\">" + days[coursesArray[i].startDate.getDay() - 1] + " | " + coursesArray[i].startDate.getHours().toString() + ":" + startMinutes + " - " + coursesArray[i].finishDate.getHours().toString() + ":" + finishMinutes);
                         //Skip over
                         i++;
                     } else {
-                        $("#results").append("<div class=\"indivClass\"><p class=\"className\">Class: " + coursesArray[i].course + "</p> <p class=\"day\">" + days[coursesArray[i].startDate.getDay() - 1] + " | " + coursesArray[i].startDate.getHours().toString() + ":" + startMinutes + " - " + coursesArray[i].finishDate.getHours().toString() + ":" + finishMinutes)
-
+                        $("#results").append("<div class=\"indivClass\"><p class=\"className\">Class: " + coursesArray[i].course + "</p> <p class=\"day\">" + days[coursesArray[i].startDate.getDay() - 1] + " | " + coursesArray[i].startDate.getHours().toString() + ":" + startMinutes + " - " + coursesArray[i].finishDate.getHours().toString() + ":" + finishMinutes);
                     }
                 }
 
-                if (coursesArray.length == 0) {
+                if (coursesArray.length === 0) {
                     $("#results").empty();
                     $("#results").append("<p>Looks like there is nothing in that room on that day.</p>");
                 }
@@ -337,13 +331,13 @@ function calculateRoomResults(roomSplit,campus)
                 $("#errorMessage").show("slide", {
                     direction: "up"
                 }, 200);
-                var timer = setTimeout("hideErrorMessage()", 5000);
+                var timer = setTimeout(hideErrorMessage, 5000);
                 $("#loader").fadeOut('slow', function () {
                     $("#buildingRoomQuery").show("slide", {
                         direction: "up"
                     }, 200);
                 });
-                return
+                return;
             }
         });
 }

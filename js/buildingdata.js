@@ -3,14 +3,14 @@ var buildingName = ["Abel Smith Lecture Theatre","Axon Building","Biological Sci
 var buildingNumber = ["23","47","94","69","35","68","39","26","74","44","43","39A","78","32","83","50","26B","36A","37","45","24A","76","81","63","42","67","80","22","47A","14","64","65","31A","24","36F","84A","84","27A","51","82F","82D","8116","8117","8106","8159","8107","8255","8111","8178","6212","6211","6208","6201","8214","GATTON","51A","6214","82K","82C","6215","6202","6219","CP1","8124","82A","6218","6217","UQEM","0870","17","82B","8164","91C","16","75","4","61A","33","54","96","97","73","28A","48","98D","36B","80B","80A","72","36G","2","36D","1","86","60","8","36","26A","85","61","11","62","36C","58A","93B","9","98A","98B","93A","29A","7","6","63A","21","21D","5","64A","87A","82","36E","3","90","36H","36J","41","38","25","99","1","36","10","12","13","14","15","17","18","19","2","21A","21B","22","28","3","38","4","8","8115","8112","8103","8150","8349","8114","8117A","8126","179","360","123","159","125","126","214","118","182","152","153","144","102","218","178","146","101","101A","117","335","111","138","107","131","157","129","209","8156","134"];
 var buildingCampus = ["St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","Gatton","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","St Lucia","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Ipswich","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton","Gatton"];
 
-function generateSelects(campus) 
+function generateSelects(campus)
 {
-	$("#buildingSelect").empty()
-	$("#buildingSelect").append('<option value="null">Select a building</select>');
-	for (var i=0; i<buildingID.length; i+=1) {
-		if (campus==buildingCampus[i]) {
-			$("#buildingSelect").append('<option value="'+i+'">'+buildingName[i]+' ('+buildingNumber[i]+')</option>')
-		}
-	}
+    $("#buildingSelect").empty();
+    $("#buildingSelect").append('<option value="null">Select a building</select>');
+    for (var i=0; i<buildingID.length; i+=1) {
+        if (campus==buildingCampus[i]) {
+            $("#buildingSelect").append('<option value="'+i+'">'+buildingName[i]+' ('+buildingNumber[i]+')</option>');
+        }
+    }
 }
 

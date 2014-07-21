@@ -1,15 +1,15 @@
-var gRoomData = null
-var $xml = null
-var xmlDoc = null
-var coursesArray = null
-var buildingsSTL = {}
-var buildingsGATTN = {}
-var buildingsIPSWC = {}
-var currentCampus = "STL"
-var buildings = {}
-var currentSemester = "6460" //Hardcoded: must be updated.
-var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-var longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+var gRoomData = null;
+var $xml = null;
+var xmlDoc = null;
+var coursesArray = null;
+var buildingsSTL = {};
+var buildingsGATTN = {};
+var buildingsIPSWC = {};
+var currentCampus = "STL";
+var buildings = {};
+var currentSemester = "6460"; //Hardcoded: must be updated.
+var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+var longDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 $(document).ready(function () {
     $('body').scrollTop(1);
@@ -25,7 +25,7 @@ $(document).ready(function () {
 
     $("#buildingRoomQuery").show("slide", {
         direction: "up"
-    }, 200)
+    }, 200);
 
     var today = new Date().getDay() - 1;
     for (var i = 0; i < days.length; i++) {
@@ -41,25 +41,25 @@ $(document).ready(function () {
     //Get the current semester
 
     // $.ajax({
-    // 		url:"http://rota.eait.uq.edu.au/semesters.xml",
-    // 		dataType: 'text',
-    // 		success:function(data){
-    // 			xmlDoc = $.parseXML(data);
-    // 			$xml = $(xmlDoc)
+    //      url:"http://rota.eait.uq.edu.au/semesters.xml",
+    //      dataType: 'text',
+    //      success:function(data){
+    //          xmlDoc = $.parseXML(data);
+    //          $xml = $(xmlDoc)
 
-    // 			$xml.find('semester').each(function(){
-    // 				if($(this).attr('current')=='true') {
-    // 				   currentSemester = $(this).text();
-    // 				}
+    //          $xml.find('semester').each(function(){
+    //              if($(this).attr('current')=='true') {
+    //                 currentSemester = $(this).text();
+    //              }
 
-    // 			});
+    //          });
 
-    // 		},
-    // 		error:function(){
-    // 			alert("Error fetching the current semester");
-    // 			return
-    // 		}
-    // 	});
+    //      },
+    //      error:function(){
+    //          alert("Error fetching the current semester");
+    //          return
+    //      }
+    //  });
 
     $('#roomName').keyup(function (event) {
         if (event.keyCode == 13) {
@@ -71,7 +71,7 @@ $(document).ready(function () {
         showLoader();
         $("#buildingRoomQuery").hide("slide", {
             direction: "up"
-        }, 200)
+        }, 200);
 
         //Hide the menu, show a spinner while we load.
 
@@ -84,19 +84,19 @@ $(document).ready(function () {
                 gRoomData = data;
                 //gRoomData = "<rss version='2.0'>" + gRoomData.toString + "</rss>"
                 xmlDoc = $.parseXML(gRoomData);
-                $xml = $(xmlDoc)
+                $xml = $(xmlDoc);
 
                 /*
-		//Filter for today's date
-		var today = new Date();
-		dayIndex = today.getDay();
-		var todayShortDate = days[dayIndex-1]
-		*/
+        //Filter for today's date
+        var today = new Date();
+        dayIndex = today.getDay();
+        var todayShortDate = days[dayIndex-1]
+        */
                 if ($('#errorMessage').is(':visible')) {
                     $('#errorMessage').empty();
                     $('#errorMessage').hide();
                 }
-                if ($xml.find('id').length == 0) {
+                if ($xml.find('id').length === 0) {
                     $('#errorMessage').empty();
                     $('#errorMessage').append('<p class="className">Class does not exist</p>');
                     $("#loader").hide();
@@ -137,7 +137,7 @@ $(document).ready(function () {
                                         $('#results').append('<p class="day">' + bnum + ' (' + bname + '), Room ' + rm + '</p><br/>');
                                     }
                                 });
-                                if ($('#results').text() == "") {
+                                if ($('#results').text() === "") {
                                     $('#results').append('<p class="className">' + $('#roomName').val() + ' is not on.</p>');
                                     $('#results').append('<p class="day">Try a different day?</p>');
                                 }
@@ -159,7 +159,7 @@ $(document).ready(function () {
         }, 200);
         $("#buildingRoomQuery").show("slide", {
             direction: "up"
-        }, 200)
+        }, 200);
     });
 
 });
@@ -172,7 +172,7 @@ function showResults() {
     $("#results").fadeIn('slow');
     $("#buildingRoomQuery").hide("slide", {
         direction: "up"
-    }, 200)
+    }, 200);
 }
 
 

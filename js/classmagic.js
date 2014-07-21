@@ -99,7 +99,7 @@ $(document).ready(function () {
                     $('#errorMessage').empty();
                     $('#errorMessage').hide();
                 }
-                if ($xml.find('id').length === 0) {
+                if ($xml.find('offering').length === 0) {
                     $('#errorMessage').empty();
                     $('#errorMessage').append('<p class="className">Class does not exist</p>');
                     $("#loader").hide();
@@ -110,7 +110,7 @@ $(document).ready(function () {
                         direction: "up"
                     }, 200);
                 } else {
-                    $xml.find('id').each(function () {
+                    $xml.find('offering > id').each(function () {
                         $.ajax({
                             url: 'http://rota.eait.uq.edu.au/offering/' + $(this).text() + '.xml',
                             dataType: 'text',
